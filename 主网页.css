@@ -1,0 +1,174 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    background: #F8F5F0;
+    text-align: center;
+	position: relative;
+}
+
+.bg-container {
+	position: relative;
+    width: 1000px;
+    margin: 0 auto;
+    line-height: 0;
+}
+/*覆盖在背景图*/
+.main {
+    position: absolute;
+	top: 0;
+	left: 50%;
+	transform: translateX(-50%);
+    width: 1000px;
+    height: 570px;
+	z-index: 5;
+}
+/*触发区*/
+.apple-trigger {
+    position: absolute;
+	top: 17%;
+	left: 45%;
+    width: 100px;
+    height: 100px;
+    z-index: 99999;
+	align-items: center;
+	cursor: pointer;
+}
+
+/*叉子*/
+.header {
+	position: absolute;
+	top: 0;
+	transition: 0.5s ease;
+	z-index: 100;
+    left: 42.6%;
+    transform: rotate(40deg);
+}
+/*餐刀*/
+.header1 {
+	position: absolute;
+	top: 0;
+	transition: 0.5s ease;
+	z-index: 100;
+	left: 42.6%;
+	transform: rotate(-40deg);
+}
+/*盘子+苹果*/
+.plate {
+    position: absolute;
+    top: -18px;
+    left: 49.8%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition:opacity 0.5s ease 0s, opacity 0.5s ease 0.3s;
+    z-index: 60;
+}
+/*苹果文字*/
+.apple-image {
+    position: absolute;
+    top: 22%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    color: #ff3333;
+    text-shadow: 2px 2px 4px #ffff00;
+    opacity: 0;
+	width: 220px;
+	height: auto;
+    transition: opacity 0.5s ease 0.3s, opacity 0.5s ease 0s;
+    z-index: 80;
+}
+/* 触发状态：刀叉展开，显示元素 */
+.main.active .header {
+	/* 叉子展开 */
+    left: 32%;
+    transform: translateX(-50%) rotate(0deg);
+}
+.main.active .header1 {
+	/* 餐刀展开 */
+    right: 33%;
+    transform: translateX(50%) rotate(0deg);
+}
+.main.active .plate {
+    opacity: 1;/* 展示盘子苹果 */
+}
+.main.active .apple-image {
+    opacity: 1;/* 显示apple文字 */
+}
+
+
+/* 导航 */
+.daohang{
+	position: absolute;
+	top: 18.2%;
+	left: 40%;
+	font-size: 20px;
+	z-index: 9999;
+	display: flex;
+	justify-content: space-around;
+	gap: 50px;
+}
+a{
+	text-decoration: none;
+	color: #ff77d2;
+}
+a:hover{
+	color: #2c92f1;
+}
+a:visited{
+	color: #ff77d2;
+}
+
+/* 光标 */
+body{
+    /* 这里换成你自己的图片就行 */
+    cursor: url("未光标.png"), default !important;
+}
+.bth{
+	cursor: url("32x32中.png"), pointer !important;
+}
+
+
+
+/* 公告 */
+/* 外层容器：固定高度 + 允许上下滑动 */
+.scroll-frame {
+    /* 框架高度（可自己修改） */
+    height: 411px;
+    /* 宽度自适应 */
+    width: 410px;
+    /* 最大宽度，避免太宽 */
+    max-width: 500px;
+    /* 边框，方便看框架范围 */
+    border: 2px solid white;
+    border-radius: 8px;
+    /* 居中显示 */
+    margin: 20px auto;
+    /* 核心：超出高度自动出现上下滚动条 */
+    overflow-y: auto;
+    /* 内部边距 */
+    padding: 15px;
+	position: absolute;
+	top: 23.6%;
+	left: 22.7%;
+	z-index: 9999;
+    background-color: #f9f9f9;
+	z-index: 10;
+	}
+
+/* 内容样式（可随意修改） */
+.content {
+    font-size: 15px;
+    line-height: 1.5;
+
+/* 测试用的长内容块 */
+.item {
+    padding: 20px;
+    margin-bottom: 15px;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+		
