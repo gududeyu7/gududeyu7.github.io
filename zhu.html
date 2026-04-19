@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+	 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>主页面</title>
+    <link rel="stylesheet" type="text/css" href="主网页.css">
+</head>
+<body>
+    <div class="bg-container">
+        <img src="../img/22 拷贝.jpg" width="1000px" height="1160px">
+        <img src="../img/背景.jpg" width="1000px" height="700px">
+    </div>
+
+
+    <div class="main">
+        <div class="apple-trigger"></div>
+        <!-- 叉子 -->
+        <div class="header">
+            <img src="../img/叉子.png" alt="叉子" width="150px" height="260px">
+        </div>
+		<!-- 餐刀 -->
+        <div class="header1">
+            <img src="../img/餐刀.png" alt="餐刀" width="150px" height="260px">
+        </div>
+		<!-- 盘子+苹果 -->
+        <div class="plate">
+            <img src="../img/盘子.png" alt="盘子" width="295px" height="295px">
+            <img src="../img/苹果.png" alt="苹果" 
+			style="position: absolute; 
+			top: 70px;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 150px; height: 150px;">
+        </div>
+		<!-- Apple文字 -->
+		<img src="../img/Apple.png" class="apple-image" alt="Apple">
+    </div>
+	
+	<script>
+	// 点击触发苹果动画
+	document.querySelector('.apple-trigger').addEventListener('click', function(){
+	    document.querySelector('.main').classList.toggle('active');
+	});
+	</script>
+	
+	
+	<!-- 导航 -->
+	<div class="daohang">
+		<a href="#"> 导航</a>
+		<a href="#">导航</a>
+		<a href="#">导航</a>
+		<a href="#">导航</a>
+	</div>
+	
+	
+    <!-- 上下滑动框架 -->
+    <div class="scroll-frame">
+        <div class="content">
+            <!-- 下面是长内容，用来测试滑动 -->
+            <div class="item">第 1 块内容</div>
+            <div class="item">第 2 块内容</div>
+            <div class="item">第 3 块内容</div>
+            <div class="item">第 4 块内容</div>
+            <div class="item">第 5 块内容</div>
+            <div class="item">第 6 块内容</div>
+            <div class="item">第 7 块内容</div>
+            <div class="item">第 8 块内容</div>
+            <div class="item">第 9 块内容</div>
+            <div class="item">第 10 块内容</div>
+            <div class="item">第 11 块内容</div>
+            <div class="item">第 12 块内容</div>
+            <div class="item">第 13 块内容</div>
+            <div class="item">第 14 块内容</div>
+            <div class="item">第 15 块内容</div>
+        </div>
+    </div>
+	<div class="parent-box">
+		<div class="boxx">
+			<img src="../img/未光标.png"  class="img-move"alt="苹果叉子"/>
+			<img src="../img/32x32中.png" class="img-move" alt="苹果"/>
+		</div>
+	</div>
+
+
+    <!-- JS：彻底禁止缩放 -->
+    <script>
+        // 禁止 iOS 手势缩放
+        document.addEventListener('gesturestart', function (e) {
+            e.preventDefault();
+        });
+
+        // 禁止 Ctrl + 滚轮 缩放
+        window.addEventListener('wheel', function (e) {
+            if (e.ctrlKey) e.preventDefault();
+        }, { passive: false });
+
+        // 禁止 Ctrl + - + 快捷键缩放
+        document.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && 
+                (e.key === '+' || e.key === '-' || e.key === '=')) {
+                e.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>
