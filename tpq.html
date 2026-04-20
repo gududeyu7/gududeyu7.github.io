@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片评论区</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        body {
+            background-color: #f5f5f5;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .container {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .title {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        .image-box {
+            width: 100%;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .image-box img {
+            max-width: 100%;
+            max-height: 500px;
+            border-radius: 8px;
+            object-fit: cover;
+        }
+        .comment-input {
+            margin-bottom: 25px;
+        }
+        .input-group {
+            margin-bottom: 12px;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 15px;
+            outline: none;
+            resize: none;
+        }
+        input:focus, textarea:focus {
+            border-color: #409eff;
+        }
+        #submitBtn {
+            background-color: #409eff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+        #submitBtn:hover {
+            background-color: #337ecc;
+        }
+        .comment-list {
+            margin-top: 20px;
+        }
+        .comment-item {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .comment-name {
+            font-weight: bold;
+            color: #409eff;
+            margin-bottom: 5px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .comment-content {
+            color: #555;
+            line-height: 1.5;
+            margin-bottom: 6px;
+        }
+        .comment-time {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .empty-tip {
+            text-align: center;
+            color: #999;
+            padding: 20px;
+        }
+        /* 回复框样式 */
+        .reply-input {
+            margin: 10px 0 10px 20px;
+            display: none;
+        }
+        .reply-btn {
+            font-size: 12px;
+            color: #409eff;
+            cursor: pointer;
+            margin-left: 10px;
+            font-weight: normal;
+        }
+        /* 回复列表样式 */
+        .reply-list {
+            margin-left: 20px;
+            margin-top: 8px;
+            padding-left: 10px;
+            border-left: 2px solid #eee;
+        }
+        .reply-item {
+            padding: 8px 0;
+            font-size: 14px;
+        }
+        .reply-name {
+            color: #66b1ff;
+            font-weight: bold;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .reply-content {
+            color: #666;
+            line-height: 1.4;
+        }
+        .reply-time {
+            font-size: 11px;
+            color: #bbb;
+            margin-top: 3px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        /* 折叠按钮 */
+        .fold-btn {
+            font-size: 12px;
+            color: #999;
+            cursor: pointer;
+            margin-top: 5px;
+            display: inline-block;
+        }
+        /* 删除按钮 */
+        .del-btn {
+            font-size: 12px;
+            color: #f56c6c;
+            cursor: pointer;
+            font-weight: normal;
+        }
+        .del-btn:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2 class="title">我的图片 · 评论区^V^</h2>
+        <div class="image-box">
+            <img id="showImg" alt="展示图片">
+        </div>
+
+        <div class="comment-input">
+            <div class="input-group">
+                <input type="hidden" id="nameInput">
+            </div>
+            <div class="input-group">
+                <textarea id="contentInput" rows="3" placeholder="禁止吵架、恶语相向"></textarea>
+            </div>
+            <button id="submitBtn">发表评论</button>
+        </div>
+
+        <div class="comment-list" id="commentList"></div>
+    </div>
+
+    <script>
+        // 获取 id
+        const params = new URLSearchParams(location.search);
+        const id = params.get('id') || '1';
+
+        // 直接拼接图片路径，绝对不会空
+        const imgSrc = '../img/' + id + '.jpg';
+        document.getElementById('showImg').src = imgSrc;
+
+        // 用户名
+        function getRandomName() {
+            if (localStorage.getItem('userNickname')) {
+                return localStorage.getItem('userNickname');
+            }
+            const adjectives = ["可爱的","快乐的","安静的","勇敢的","温柔的","阳光的","热心的","认真的"];
+            const nouns = ["小猫咪","小熊","兔子","云朵","星星","月亮","海豚","小鹿"];
+            const name = adjectives[Math.floor(Math.random()*adjectives.length)] + nouns[Math.floor(Math.random()*nouns.length)];
+            localStorage.setItem('userNickname', name);
+            return name;
+        }
+        const userName = getRandomName();
+        document.getElementById('nameInput').value = userName;
+
+        // 每个图片独立评论 + 回复
+        const key = 'comments_' + id;
+        let comments = JSON.parse(localStorage.getItem(key)) || [];
+
+        // 渲染主评论
+        render();
+        function render() {
+            if (comments.length === 0) {
+                commentList.innerHTML = '<div class="empty-tip">暂无评论</div>';
+                return;
+            }
+            let html = '';
+            comments.forEach((item, index) => {
+                // 初始化回复数据
+                if (!item.replies) item.replies = [];
+                // 回复展示状态
+                const showReplies = item.showReplies !== false;
+                const replyCount = item.replies.length;
+
+                // 判断是否显示删除按钮：自己发的 + 1分钟内
+                const now = Date.now();
+                const isMyComment = item.name === userName;
+                const canDelete = isMyComment && item.timestamp && (now - item.timestamp) < 60 * 1000;
+                const delBtn = canDelete ? `<span class="del-btn" onclick="deleteComment(${index})">删除</span>` : '';
+                
+                html += `
+                <div class="comment-item">
+                    <div class="comment-name">
+                        ${item.name}
+                        <div>
+                            <span class="reply-btn" onclick="toggleReply(${index})">回复</span>
+                            ${delBtn}
+                        </div>
+                    </div>
+                    <div class="comment-content">${item.content}</div>
+                    <div class="comment-time">${item.time}</div>
+                    
+                    <!-- 回复输入框 -->
+                    <div class="reply-input" id="replyInput_${index}">
+                        <textarea class="reply-textarea" rows="2" placeholder="回复 @${item.name}"></textarea>
+                        <button onclick="sendReply(${index})" style="margin-top:6px;background:#409eff;color:white;border:none;padding:6px 12px;border-radius:4px;cursor:pointer;">发送回复</button>
+                    </div>
+                    
+                    <!-- 回复列表 -->
+                    <div class="reply-list" id="replyList_${index}" style="display:${showReplies ? 'block' : 'none'};">
+                `;
+
+                // 渲染回复
+                item.replies.forEach((rep, repIndex) => {
+                    const isMyReply = rep.name === userName;
+                    const canDelReply = isMyReply && rep.timestamp && (now - rep.timestamp) < 60 * 1000;
+                    const replyDelBtn = canDelReply ? `<span class="del-btn" onclick="deleteReply(${index}, ${repIndex})">删除</span>` : '';
+
+                    html += `
+                    <div class="reply-item">
+                        <div class="reply-name">
+                            ${rep.name}
+                            ${replyDelBtn}
+                        </div>
+                        <div class="reply-content">${rep.content}</div>
+                        <div class="reply-time">${rep.time}</div>
+                    </div>`;
+                });
+
+                html += `
+                    </div>
+                    ${replyCount > 0 ? `<span class="fold-btn" onclick="toggleFold(${index})">${showReplies ? '收起回复' : '展开回复'} (${replyCount})</span>` : ''}
+                </div>`;
+            });
+            commentList.innerHTML = html;
+        }
+
+        // 发布主评论
+        submitBtn.onclick = function () {
+            const c = contentInput.value.trim();
+            if (!c) return alert('请输入内容');
+            comments.unshift({
+                name: userName,
+                content: c,
+                time: new Date().toLocaleString(),
+                timestamp: Date.now(), // 存储时间戳用于判断
+                replies: [],
+                showReplies: true
+            });
+            localStorage.setItem(key, JSON.stringify(comments));
+            contentInput.value = '';
+            render();
+        };
+
+        // 切换回复输入框显示/隐藏
+        window.toggleReply = function (commentIndex) {
+            const inputDom = document.getElementById(`replyInput_${index}`);
+            inputDom.style.display = inputDom.style.display === 'block' ? 'none' : 'block';
+        };
+
+        // 发送回复
+        window.sendReply = function (commentIndex) {
+            const textarea = document.querySelector(`#replyInput_${commentIndex} .reply-textarea`);
+            const content = textarea.value.trim();
+            if (!content) return alert('请输入回复内容');
+            
+            // 添加回复
+            comments[commentIndex].replies.push({
+                name: userName,
+                content: content,
+                time: new Date().toLocaleString(),
+                timestamp: Date.now()
+            });
+            
+            // 保存并刷新
+            localStorage.setItem(key, JSON.stringify(comments));
+            textarea.value = '';
+            render();
+        };
+
+        // 切换回复折叠/展开
+        window.toggleFold = function (commentIndex) {
+            comments[commentIndex].showReplies = !comments[commentIndex].showReplies;
+            localStorage.setItem(key, JSON.stringify(comments));
+            render();
+        };
+
+        // 删除主评论
+        window.deleteComment = function (index) {
+            if (!confirm('确定要删除这条评论吗？')) return;
+            comments.splice(index, 1);
+            localStorage.setItem(key, JSON.stringify(comments));
+            render();
+        };
+
+        // 删除回复
+        window.deleteReply = function (commentIndex, replyIndex) {
+            if (!confirm('确定要删除这条回复吗？')) return;
+            comments[commentIndex].replies.splice(replyIndex, 1);
+            localStorage.setItem(key, JSON.stringify(comments));
+            render();
+        };
+    </script>
+</body>
+</html>
