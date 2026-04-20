@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>图片相册排版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+        body {
+            background-color: #f5f5f5;
+            padding: 40px 20px;
+            position: relative;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .title {
+            text-align: center;
+            font-size: 28px;
+            margin-bottom: 40px;
+            color: #333;
+        }
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 30px;
+        }
+        .card {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+            display: block;
+            text-decoration: none;
+        }
+        .img-box {
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+        }
+        .img-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.4s ease;
+        }
+        .card:hover .img-box img {
+            transform: scale(1.08);
+        }
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        .info {
+            padding: 18px;
+            text-align: center;
+        }
+        .info h3 {
+            font-size: 18px;
+            color: #222;
+            margin-bottom: 6px;
+        }
+        .info .location {
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 6px;
+        }
+        .info .date {
+            font-size: 14px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2 class="title">图片合集</h2>
+    <div class="gallery">
+
+        <a href="tpq.html?id=1" class="card" target="_blank">
+            <div class="img-box"><img src="../img/1.jpg" alt="图片"></div>
+            <div class="info"><h3>未知</h3><p class="location">未知</p><p class="date">2025年12月20日</p></div>
+        </a>
+
+        <a href="tpq.html?id=2" class="card" target="_blank">
+            <div class="img-box"><img src="../img/2.jpg" alt="图片"></div>
+            <div class="info"><h3>像素有点低^V^</h3><p class="location">安徽材料对口附近</p><p class="date">2025年12月19日</p></div>
+        </a>
+
+        <a href="tpq.html?id=3" class="card" target="_blank">
+            <div class="img-box"><img src="../img/3.jpg" alt="图片"></div>
+            <div class="info"><h3>市赛完赛后的学校</h3><p class="location">安徽材料工程学校</p><p class="date">2025年12月18日</p></div>
+        </a>
+
+        <a href="tpq.html?id=4" class="card" target="_blank">
+            <div class="img-box"><img src="../img/4.jpg" alt="图片"></div>
+            <div class="info"><h3>12月的银杏树</h3><p class="location">安徽材料工程学校</p><p class="date">2025年12月17日</p></div>
+        </a>
+
+        <a href="tpq.html?id=5" class="card" target="_blank">
+            <div class="img-box"><img src="../img/5.jpg" alt="图片"></div>
+            <div class="info"><h3>12月的银杏树2</h3><p class="location">安徽材料工程学校</p><p class="date">2025年12月16日</p></div>
+        </a>
+
+        <a href="tpq.html?id=6" class="card" target="_blank">
+            <div class="img-box"><img src="../img/6.jpg" alt="图片"></div>
+            <div class="info"><h3>校园落日</h3><p class="location">安徽材料工程学校食堂附近</p><p class="date">2025年12月15日</p></div>
+        </a>
+
+        <a href="tpq.html?id=7" class="card" target="_blank">
+            <div class="img-box"><img src="../img/7.jpg" alt="图片"></div>
+            <div class="info"><h3>校园落日2</h3><p class="location">安徽材料工程学校食堂附近</p><p class="date">2025年12月15日</p></div>
+        </a>
+
+        <a href="tpq.html?id=8" class="card" target="_blank">
+            <div class="img-box"><img src="../img/8.jpg" alt="图片"></div>
+            <div class="info"><h3>校园的树</h3><p class="location">安徽材料工程学校食堂附近</p><p class="date">2025年12月15日</p></div>
+        </a>
+
+        <a href="tpq.html?id=9" class="card" target="_blank">
+            <div class="img-box"><img src="../img/9.jpg" alt="图片"></div>
+            <div class="info"><h3>校园的树2</h3><p class="location">安徽材料工程学校食堂附近</p><p class="date">2025年12月15日</p></div>
+        </a>
+
+        <a href="tpq.html?id=10" class="card" target="_blank">
+            <div class="img-box"><img src="../img/10.jpg" alt="图片"></div>
+            <div class="info"><h3>校园的树3</h3><p class="location">安徽材料工程学校食堂附近</p><p class="date">2025年12月15日</p></div>
+        </a>
+
+        <a href="tpq.html?id=11" class="card" target="_blank">
+            <div class="img-box"><img src="../img/11.jpg" alt="图片"></div>
+            <div class="info"><h3>校园的树4</h3><p class="location">安徽材料工程学校食堂附近</p><p class="date">2025年12月15日</p></div>
+        </a>
+
+        <a href="tpq.html?id=12" class="card" target="_blank">
+            <div class="img-box"><img src="../img/12.jpg" alt="图片"></div>
+            <div class="info"><h3>校园的树5</h3><p class="location">安徽材料工程学校食堂附近</p><p class="date">2025年12月15日</p></div>
+        </a>
+
+    </div>
+</div>
+</body>
+</html>

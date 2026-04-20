@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>信封动效</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 页面背景 */
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #f0f2f5;
+            overflow: hidden;
+        }
+
+        /* 信封容器 - 占屏幕近2/3大小 */
+        .envelope {
+            width: 65vw;
+            height: 40vw;
+            max-width: 900px;
+            max-height: 550px;
+            position: relative;
+            cursor: pointer;
+            /* 飘入动画：从左侧飞入，1.5秒完成 */
+            animation: flyIn 1.5s ease-out forwards;
+        }
+
+        /* 信封飘入动画关键帧 */
+        @keyframes flyIn {
+            0% {
+                transform: translateX(-150%) rotate(-20deg);
+                opacity: 0;
+            }
+            100% {
+                transform: translateX(0) rotate(0deg);
+                opacity: 1;
+            }
+        }
+
+        /* 信封主体 */
+        .envelope-body {
+            width: 100%;
+            height: 100%;
+            background-color: #FFC0CB;
+            border-radius: 10px;
+            position: relative;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            /* 核心：隐藏超出信封的内容 */
+            overflow: hidden;
+        }
+
+        /* 信封封口 */
+        .envelope-flap {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 50%;
+            background-color: #FFB6C1;
+            clip-path: polygon(0 0, 50% 100%, 100% 0);
+            /* 封口展开动画 */
+            transition: transform 0.8s ease;
+            transform-origin: top center;
+            z-index: 2;
+        }
+
+        /* 信封打开后封口翻转 */
+        .envelope.open .envelope-flap {
+            transform: rotateX(180deg);
+        }
+
+        /* 信纸容器 - 完全隐藏在信封内部 */
+        .letter {
+            position: absolute;
+            bottom: 0;
+            left: 5%;
+            width: 90%;
+            height: 85%;
+            background-color: #fff;
+            border-radius: 5px;
+            padding: 40px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            /* 核心：完全藏在信封里 */
+            transform: translateY(100%);
+            transition: transform 1s ease;
+            z-index: 1;
+        }
+
+        /* 信封打开后信纸弹出 */
+        .envelope.open .letter {
+            transform: translateY(-10%);
+        }
+
+        /* 信纸文字样式 */
+        .letter-text {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 40px;
+            text-align: center;
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        /* 进入网页按钮 */
+        .enter-btn {
+            padding: 18px 50px;
+            background-color: #FFC0CB;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 22px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(212, 176, 137, 0.4);
+            font-family: "Microsoft YaHei", sans-serif;
+        }
+
+        /* 按钮 hover 效果 */
+        .enter-btn:hover {
+            background-color: #FFB6C1;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(212, 176, 137, 0.6);
+        }
+    </style>
+</head>
+<body>
+    <!-- 信封主体 -->
+    <div class="envelope" id="envelope">
+        <div class="envelope-body">
+            <!-- 信封封口 -->
+            <div class="envelope-flap"></div>
+            <!-- 信纸内容 -->
+            <div class="letter">
+                <p class="letter-text">^V^<br>欢迎来到我的网页</p>
+                <button class="enter-btn" onclick="goToPage()"><a href="../zhu.html" style="text-decoration: none;color: #fff;">进入网页</a></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 获取信封元素
+        const envelope = document.getElementById('envelope');
+        
+        // 点击信封展开信纸
+        envelope.addEventListener('click', function() {
+            // 仅第一次点击生效
+            if(!envelope.classList.contains('open')) {
+                envelope.classList.add('open');
+            }
+        });
+
+        // 进入网页函数（可修改跳转链接）
+        function goToPage() {
+            // 替换为你想要跳转的网页地址
+            window.location.href = "https://www.baidu.com";
+        }
+    </script>
+</body>
+</html>
