@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+	 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>主页面</title>
+    <link rel="stylesheet" type="text/css" href="主网页.css">
+</head>
+<body>
+    <div class="bg-container">
+        <img src="../img/22 拷贝.jpg" width="1000px" height="1160px">
+
+		
+		<!-- 自动轮播图片 -->
+		<div class="slider-box">
+		  <a href="tpj.html"><img src="../img/1.jpg" alt=""></a>
+		  <a href="tpj.html"><img src="../img/2.jpg" alt=""></a>
+		  <a href="tpj.html"><img src="../img/3.jpg" alt=""></a>
+		</div>
+		
+		
+		<!-- 公告栏（倒序 + 自动当天日期） -->
+		<div class="scroll-frame">
+		    <div class="content" id="noticeBox">
+		        <!-- JS 自动填充公告内容 -->
+		    </div>
+		</div>
+    </div>
+	
+
+    <div class="main">
+        <div class="apple-trigger"></div>
+        <!-- 叉子 -->
+        <div class="header">
+            <img src="../img/叉子.png" alt="叉子" width="150px" height="260px">
+        </div>
+		<!-- 餐刀 -->
+        <div class="header1">
+            <img src="../img/餐刀.png" alt="餐刀" width="150px" height="260px">
+        </div>
+		<!-- 盘子+苹果 -->
+        <div class="plate">
+            <img src="../img/盘子.png" alt="盘子" width="295px" height="295px">
+            <img src="../img/苹果.png" alt="苹果" 
+			style="position: absolute; 
+			top: 70px;
+			left: 50%;
+			transform: translateX(-50%);
+			width: 150px; height: 150px;">
+        </div>
+		<!-- Apple文字 -->
+		<img src="../img/Apple.png" class="apple-image" alt="Apple">
+    </div>
+	
+	<script>
+	// 点击触发苹果动画
+	document.querySelector('.apple-trigger').addEventListener('click', function(){
+	    document.querySelector('.main').classList.toggle('active');
+	});
+	</script>
+	
+	
+
+
+    <!-- JS：彻底禁止缩放 -->
+    <script>
+        // 禁止 iOS 手势缩放
+        document.addEventListener('gesturestart', function (e) {
+            e.preventDefault();
+        });
+
+        // 禁止 Ctrl + 滚轮 缩放
+        window.addEventListener('wheel', function (e) {
+            if (e.ctrlKey) e.preventDefault();
+        }, { passive: false });
+
+        // 禁止 Ctrl + - + 快捷键缩放
+        document.addEventListener('keydown', function (e) {
+            if ((e.ctrlKey || e.metaKey) && 
+                (e.key === '+' || e.key === '-' || e.key === '=')) {
+                e.preventDefault();
+            }
+        });
+		
+		// 鼠标滚动 → 线条从点变长
+		const scrollLine = document.querySelector('.scroll-line');
+		window.addEventListener('scroll', () => {
+		  let scrollTop = window.scrollY;
+		  let lineWidth = Math.min(scrollTop * 1.2, 600); 
+		  scrollLine.style.width = lineWidth + 'px';
+		});
+
+
+		// ==============================================
+		// 公告栏：倒序显示 + 自动生成当天日期
+		// ==============================================
+		function getTodayDate() {
+			const now = new Date();
+			const year = now.getFullYear();
+			const month = String(now.getMonth() + 1).padStart(2, '0');
+			const day = String(now.getDate()).padStart(2, '0');
+			return `${year}-${month}-${day}`;
+		}
+
+		// 你的公告列表（按 最早→最晚 写）
+		const noticeList = [
+			"点击盘子苹果移位问题以完善",
+			"去掉了导航",
+			"完善的网站公告栏",
+			"添加了自动轮播栏，并加入图片展示网页",
+			"添加了图片可以评论的功能",
+			"添加了些许装饰品",
+			"添加了评论可以在1分钟内删除"
+		];
+
+		// 倒序 + 渲染
+		const today = getTodayDate();
+		const noticeBox = document.getElementById('noticeBox');
+		const reversedList = [...noticeList].reverse(); // 倒序
+
+		reversedList.forEach(item => {
+			const div = document.createElement('div');
+			div.className = 'item';
+			div.innerText = `[${today}] ${item}`;
+			noticeBox.appendChild(div);
+		});
+    </script>
+
+	
+	<style>
+/* 自动轮播样式 */
+.slider-box {
+  position: absolute;
+  top: 804px;
+  left: 550px;
+  width: 330px;
+  height: 300px;
+  overflow: hidden;
+  z-index: 1;
+}
+.slider-box a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  opacity: 0;
+  animation: slide 9s linear infinite;
+}
+.slider-box img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.slider-box a:nth-child(2) { animation-delay: 3s; }
+.slider-box a:nth-child(3) { animation-delay: 6s; }
+
+@keyframes slide {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  33% { opacity: 1; }
+  43% { opacity: 0; }
+  100% { opacity: 0; }
+}
+	</style>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+<!-- 可拖动粉色留言板（输入区） -->
+<div id="msgBoard" style="position:fixed;bottom:30px;right:30px;width:320px;background:#FFECF3;padding:15px;border-radius:12px;box-shadow:0 5px 15px rgba(0,0,0,0.3);z-index:9999;user-select:none;">
+  <h4 id="dragTitle" style="margin:0 0 10px;cursor:move;">💬 留言板（按住这里拖动）</h4>
+  <textarea id="msgInput" rows="3" placeholder="输入留言..." style="width:100%;box-sizing:border-box;padding:8px;border-radius:6px;border:1px solid #ccc;"></textarea>
+  <button onclick="sendMsg()" style="width:100%;margin-top:8px;padding:8px;background:#FF7CB9;color:white;border:none;border-radius:6px;cursor:pointer;">提交</button>
+</div>
+
+<!-- 背景布上的信封留言列表 -->
+<div id="msgList" style="position: absolute; top: 200px; left: 100px; z-index: 2;"></div>
+
+<style>
+/* 信封容器 - 用transform定位更丝滑 */
+.msg-envelope {
+  position: absolute;
+  width: 240px;
+  height: 160px;
+  cursor: grab;
+  user-select: none;
+  /* 初始位置用transform设置，避免top/left重绘 */
+  transform: translate(0, 0);
+  will-change: transform; /* 告诉浏览器即将动画，优化性能 */
+}
+
+.msg-envelope:active {
+  cursor: grabbing;
+}
+
+/* 信封封皮 */
+.env-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #fef9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+  transition: transform 0.5s ease;
+  z-index: 2;
+  /* 防止子元素遮挡点击区域 */
+  pointer-events: none;
+}
+
+/* 粉色封口三角 */
+.env-flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 80px;
+  background: #ffd6e8;
+  clip-path: polygon(0 0, 50% 50%, 100% 0);
+  transform-origin: top center;
+  transition: transform 0.5s ease;
+  z-index: 3;
+}
+
+/* 打开动画 */
+.msg-envelope.open .env-flap {
+  transform: rotateX(180deg);
+}
+
+.msg-envelope.open .env-front {
+  transform: translateY(80px);
+  border-radius: 0 0 8px 8px;
+}
+
+/* 信纸 - 最高层级，覆盖三角 */
+.env-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 15px;
+  box-sizing: border-box;
+  background: #fff;
+  border-radius: 6px;
+  box-shadow: inset 0 0 5px rgba(0,0,0,0.1);
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.4s ease;
+  z-index: 4;
+  /* 信纸可点击，封皮不可点击 */
+  pointer-events: auto;
+}
+
+.msg-envelope.open .env-inner {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.env-text {
+  font-size: 14px;
+  color: #333;
+  margin-bottom: 6px;
+  line-height: 1.4;
+}
+
+.env-time {
+  font-size: 12px;
+  color: #999;
+  text-align: right;
+}
+</style>
+
+<script>
+// 拖动输入面板
+const msgBoard = document.getElementById('msgBoard');
+const dragTitle = document.getElementById('dragTitle');
+let isDraggingBoard = false;
+let boardX = 0, boardY = 0;
+
+dragTitle.addEventListener('mousedown', (e) => {
+  isDraggingBoard = true;
+  boardX = e.clientX - msgBoard.getBoundingClientRect().left;
+  boardY = e.clientY - msgBoard.getBoundingClientRect().top;
+  // 提升层级，避免被遮挡
+  msgBoard.style.zIndex = 10000;
+  e.preventDefault();
+});
+
+document.addEventListener('mousemove', (e) => {
+  if (!isDraggingBoard) return;
+  msgBoard.style.left = e.clientX - boardX + 'px';
+  msgBoard.style.top = e.clientY - boardY + 'px';
+  msgBoard.style.right = 'auto';
+  msgBoard.style.bottom = 'auto';
+});
+
+document.addEventListener('mouseup', () => {
+  isDraggingBoard = false;
+  // 恢复原层级
+  msgBoard.style.zIndex = 9999;
+});
+
+// 提交留言
+function sendMsg() {
+  const text = document.getElementById('msgInput').value.trim();
+  if (!text) return alert('请输入留言内容');
+  const time = new Date().toLocaleString();
+  
+  const msgList = document.getElementById('msgList');
+  const envelope = document.createElement('div');
+  envelope.className = 'msg-envelope';
+  
+  // 设置初始位置（随机分散，避免重叠）
+  const randomX = Math.random() * 300;
+  const randomY = Math.random() * 200;
+  envelope.style.transform = `translate(${randomX}px, ${randomY}px)`;
+  
+  envelope.innerHTML = `
+    <div class="env-front">
+      <div class="env-flap"></div>
+    </div>
+    <div class="env-inner">
+      <div class="env-text">${text}</div>
+      <div class="env-time">${time}</div>
+    </div>
+  `;
+  
+  msgList.appendChild(envelope);
+  document.getElementById('msgInput').value = '';
+  
+  // 为新信封绑定拖动和点击事件
+  initEnvelopeInteraction(envelope);
+}
+
+// 信封交互逻辑 - 分离拖动和点击
+function initEnvelopeInteraction(envelope) {
+  let isDraggingEnvelope = false;
+  let envelopeX = 0, envelopeY = 0;
+  const rect = envelope.getBoundingClientRect();
+  const initialX = rect.left;
+  const initialY = rect.top;
+  
+  // 鼠标按下 - 判断是拖动还是打开
+  envelope.addEventListener('mousedown', (e) => {
+    // 点击信纸区域 → 切换开合，不拖动
+    if (e.target.closest('.env-inner')) {
+      envelope.classList.toggle('open');
+      return;
+    }
+    
+    // 点击封皮/三角 → 开始拖动
+    isDraggingEnvelope = true;
+    const envelopeRect = envelope.getBoundingClientRect();
+    // 计算鼠标在信封内的相对位置
+    envelopeX = e.clientX - envelopeRect.left;
+    envelopeY = e.clientY - envelopeRect.top;
+    // 提升当前信封层级，避免被遮挡
+    envelope.style.zIndex = 10000;
+    e.preventDefault();
+  });
+  
+  // 鼠标移动 - 拖动信封
+  document.addEventListener('mousemove', (e) => {
+    if (!isDraggingEnvelope) return;
+    // 计算新位置 - 用transform避免重绘
+    const newX = e.clientX - envelopeX;
+    const newY = e.clientY - envelopeY;
+    envelope.style.transform = `translate(${newX - initialX}px, ${newY - initialY}px)`;
+  });
+  
+  // 鼠标松开 - 结束拖动
+  document.addEventListener('mouseup', () => {
+    if (isDraggingEnvelope) {
+      isDraggingEnvelope = false;
+      // 恢复原层级
+      envelope.style.zIndex = 2;
+    }
+  });
+  
+  // 点击空白处不触发事件，防止冒泡
+  envelope.addEventListener('click', (e) => {
+    e.stopPropagation();
+  });
+}
+</script>
+
+</body>
+</html>
