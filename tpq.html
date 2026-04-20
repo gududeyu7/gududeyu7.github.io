@@ -186,13 +186,13 @@
     </div>
 
     <script>
-        // 获取 id
-        const params = new URLSearchParams(location.search);
-        const id = params.get('id') || '1';
+// 获取 id
+const params = new URLSearchParams(location.search);
+const id = params.get('id') || '1';
 
-        // 直接拼接图片路径，绝对不会空
-        const imgSrc = '../img/' + id + '.jpg';
-        document.getElementById('showImg').src = imgSrc;
+// 同级目录直接读取图片（已修改）
+const imgSrc = id + '.jpg';
+document.getElementById('showImg').src = imgSrc;
 
         // 用户名
         function getRandomName() {
